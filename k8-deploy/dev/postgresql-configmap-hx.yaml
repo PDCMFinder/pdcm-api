@@ -5,7 +5,7 @@ metadata:
   namespace: pdcm-api
 data:
   POSTGRES_DB: pdcm
-  POSTGRES_USER: pdcm_ro
+  POSTGRES_USER: pdx_admin
   POSTGRES_PASSWORD: {PASSWORD}
   PGDATA: /var/lib/postgresql/data/pgdata
   JDK_JAVA_OPTIONS: -Dhttps.proxyHost=hx-wwwcache.ebi.ac.uk -Dhttps.proxyPort=3128 -Dhttp.proxyHost=hx-wwwcache.ebi.ac.uk -Dhttp.proxyPort=3128
