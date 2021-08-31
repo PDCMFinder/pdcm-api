@@ -20,7 +20,7 @@ spec:
         image: postgres:latest
         envFrom:
           - configMapRef:
-              name: postgres-config
+              name: pdcm-api-postgres-config
         ports:
         - containerPort: 5432
           name: postgredb
