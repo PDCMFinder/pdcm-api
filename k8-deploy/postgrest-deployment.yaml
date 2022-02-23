@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: swagger
-  namespace: pdcm-api-dev
+  namespace: <PGRST_NAMESPACE>
   labels:
     app: swagger
     tier: frontend
@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: swagger
-  namespace: pdcm-api-dev
+  namespace: <PGRST_NAMESPACE>
   labels:
     app: swagger
 spec:
@@ -38,7 +38,7 @@ spec:
       containers:
         - env:
             - name: API_URL
-              value: "http://hh-rke-wp-webadmin-20-worker-1.caas.ebi.ac.uk:30593"
+              value: "<PGRST_OPENAPI_SERVER_PROXY_URI>"
           image: swaggerapi/swagger-ui
           name: swagger
           ports:
@@ -53,7 +53,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgrest
-  namespace: pdcm-api-dev
+  namespace: <PGRST_NAMESPACE>
   labels:
     app: postgrest
     tier: frontend
@@ -69,7 +69,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgrest
-  namespace: pdcm-api-dev
+  namespace: <PGRST_NAMESPACE>
   labels:
     app: postgrest
 spec:
@@ -87,17 +87,11 @@ spec:
         tier: frontend
     spec:
       containers:
-        - env:
-            - name: PGRST_OPENAPI_SERVER_PROXY_URI
-              value: "http://hh-rke-wp-webadmin-20-worker-1.caas.ebi.ac.uk:30593"
-            - name: PGRST_DB_ANON_ROLE
-              value: web_anon
-            - name: PGRST_DB_SCHEMA
-              value: public
-            - name: PGRST_DB_URI
-              value: postgres://web_anon:web_anon@postgres:5432/pdcm
-          image: postgrest/postgrest:latest
+        - image: postgrest/postgrest:latest
           name: postgrest
+          envFrom:
+            - configMapRef:
+                name: pdcm-api-postgrest-config
           ports:
             - containerPort: 3000
               name: http
