@@ -71,6 +71,9 @@ deploy-HH-WP-WEBADMIN-dev:
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
     - kubectl get pods,service,deploy,replicaset,ing
+  artifacts:
+    paths:
+      - "$DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev"
   only:
     refs:
       - main
@@ -102,6 +105,9 @@ deploy-HH-WP-WEBADMIN-prod:
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
     - kubectl get pods,service,deploy,replicaset,ing
+  artifacts:
+    paths:
+      - "$DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev"
   only:
     refs:
       - main
