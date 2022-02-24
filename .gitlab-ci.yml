@@ -107,7 +107,7 @@ deploy-HH-WP-WEBADMIN-prod:
     - kubectl get pods,service,deploy,replicaset,ing
   artifacts:
     paths:
-      - "$DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev"
+      - "$DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod"
   only:
     refs:
       - main
