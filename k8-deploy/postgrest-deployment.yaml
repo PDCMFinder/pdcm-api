@@ -89,9 +89,15 @@ spec:
       containers:
         - image: postgrest/postgrest:latest
           name: postgrest
-          envFrom:
-            - configMapRef:
-                name: pdcm-api-postgrest-config
+        - env:
+            - name: PGRST_OPENAPI_SERVER_PROXY_URI
+              value: "<PGRST_OPENAPI_SERVER_PROXY_URI>"
+            - name: PGRST_DB_ANON_ROLE
+              value: "<PGRST_OPENAPI_SERVER_PROXY_URI>"
+            - name: PGRST_DB_SCHEMA
+              value: "<PGRST_DB_SCHEMA>"
+            - name: PGRST_DB_URI
+              value: "<PGRST_DB_URI>"
           ports:
             - containerPort: 3000
               name: http

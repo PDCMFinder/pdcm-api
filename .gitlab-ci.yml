@@ -62,7 +62,6 @@ deploy-HH-WP-WEBADMIN-dev:
     - kubectl config set-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}" --cluster=local --user=${HH_WP_WEBADMIN_DEV_USER} --namespace="${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl config use-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl version
-#    - kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-configmap.yaml
 
     - |
       if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml --record | grep -q unchanged; then
