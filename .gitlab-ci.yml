@@ -27,6 +27,7 @@ variables:
   # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
   # mount point.
   DEPLOYMENTS_DIR: /builds/$CI_PROJECT_PATH/deployments
+  MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
 
   # For EBI you need to override the definition of CI_REGISTRY to remove the port number
   CI_REGISTRY: dockerhub.ebi.ac.uk
