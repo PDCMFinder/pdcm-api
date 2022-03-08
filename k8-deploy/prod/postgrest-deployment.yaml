@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgrest
+  namespace: pdcm-api
+  labels:
+    app: postgrest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgrest
+      tier: frontend
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgrest
+        tier: frontend
+    spec:
+      containers:
+        - image: "pdxfinder/pdcm-api:prod"
+          name: postgrest
+          env:
+            - name: PGRST_OPENAPI_SERVER_PROXY_URI
+              value: "<PGRST_OPENAPI_SERVER_PROXY_URI>"
+            - name: PGRST_DB_ANON_ROLE
+              value: "<PGRST_DB_ANON_ROLE>"
+            - name: PGRST_DB_SCHEMA
+              value: "<PGRST_DB_SCHEMA>"
+            - name: PGRST_DB_URI
+              value: "<PGRST_DB_URI>"
+            - name: PGRST_SERVER_PORT
+              value: "<PGRST_SERVER_PORT>"
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

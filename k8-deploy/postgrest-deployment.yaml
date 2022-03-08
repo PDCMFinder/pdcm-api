@@ -65,6 +65,22 @@ spec:
     app: postgrest
     tier: frontend
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgrest
+  namespace: <PGRST_NAMESPACE>
+  labels:
+    app: pdcm-api-postgrest-ingress-service
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+   - port: 3000
+  selector:
+    app: postgrest
+    tier: frontend
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
