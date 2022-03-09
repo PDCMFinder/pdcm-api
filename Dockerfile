@@ -16,4 +16,4 @@ COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=download-image /usr/local/bin/postgrest /usr/local/bin/
 ENTRYPOINT postgrest & nginx -g 'daemon off;' 
 
-EXPOSE 3000
+EXPOSE 80

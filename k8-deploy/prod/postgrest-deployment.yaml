@@ -31,10 +31,8 @@ spec:
               value: "<PGRST_DB_SCHEMA>"
             - name: PGRST_DB_URI
               value: "<PGRST_DB_URI>"
-            - name: PGRST_SERVER_PORT
-              value: "<PGRST_SERVER_PORT>"
           ports:
-            - containerPort: 3000
+            - containerPort: 80
               name: http
               protocol: TCP
           resources: {}
