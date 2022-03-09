@@ -9,7 +9,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-   - port: 3000
+   - port: 80
+     nodePort: 3230963
   selector:
     app: postgrest
     tier: frontend
