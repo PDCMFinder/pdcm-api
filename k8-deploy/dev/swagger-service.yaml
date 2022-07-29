@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgrest-dev
+  namespace: pdcm-api-dev
+  labels:
+    app: postgrest-dev
+    tier: frontend
+spec:
+  type: NodePort
+  ports:
+   - port: 3000
+  selector:
+    app: postgrest-dev
+    tier: frontend

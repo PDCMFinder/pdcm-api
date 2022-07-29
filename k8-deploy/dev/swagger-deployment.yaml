@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-dev
+  namespace: pdcm-api
+  labels:
+    app: swagger-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagger-dev
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: swagger-dev
+        tier: frontend
+    spec:
+      containers:
+        - env:
+            - name: API_URL
+              value: "<PGRST_OPENAPI_SERVER_PROXY_URI>"
+          image: swaggerapi/swagger-ui
+          name: swagger-dev
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
