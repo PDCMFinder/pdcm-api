@@ -1,6 +1,6 @@
 FROM ubuntu:latest AS download-image
 
-RUN apt-get update && apt-get upgrade -y && \
+RUN apt-add-repository ppa:mc3man/trusty-media && apt-get update && apt-get upgrade -y && \
     apt-get install -y tar xz-utils wget libpq-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
