@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: create-ticket-dev
+  namespace: pdcm-api-dev
+  labels:
+    app: create-ticket-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: create-ticket-dev
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: create-ticket-dev
+        tier: frontend
+    spec:
+      containers:
+        - image: "pdxfinder/pdcm-create-ticket:dev"
+          name: create-ticket
+          env:
+            - name: SENDER_EMAIL
+              value: "<SENDER_EMAIL>"
+            - name: SMTP_SERVER
+              value: "<SMTP_SERVER>"
+            - name: SMTP_PORT
+              value: "<SMTP_PORT>"
+          ports:
+            - containerPort: 5000
+              name: http
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

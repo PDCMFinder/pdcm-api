@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgrest-dev
+  name: create-ticket-dev
   namespace: pdcm-api-dev
   labels:
-    app: postgrest-dev
+    app: create-ticket-dev
     tier: frontend
 spec:
   type: NodePort
   ports:
-   - port: 80
-     nodePort: 30000
+    - port: 5000
+      nodePort: 30001
   selector:
-    app: postgrest-dev
+    app: create-ticket-dev
     tier: frontend

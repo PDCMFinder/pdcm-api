@@ -59,7 +59,7 @@ build_prod_image:
     - mkdir -p "$MOUNT_POINT"
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
   script:
-#    - sed -i "s|FROM ubuntu|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
+    - sed -i "s|FROM alpine|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
     - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
@@ -80,7 +80,6 @@ build_prod_image:
   only:
     refs:
       - main
-
 
 deploy-HH-WP-WEBADMIN-prod:
   stage: deploy-prod
@@ -148,8 +147,7 @@ deploy-HX-WP-WEBADMIN-sec:
     refs:
       - main
 
-
-build_dev_image:
+build_main_dev_image:
   stage: build-dev
   services:
     - name: $CI_REGISTRY/mouse-informatics/dind:latest
@@ -160,7 +158,7 @@ build_dev_image:
     - mkdir -p "$MOUNT_POINT"
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
   script:
-#    - sed -i "s|FROM ubuntu|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
+    - sed -i "s|FROM alpine|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
     - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
@@ -182,8 +180,38 @@ build_dev_image:
     refs:
       - main
 
+build_mail_dev_image:
+  stage: build-dev
+  services:
+    - name: $CI_REGISTRY/mouse-informatics/dind:latest
+      alias: docker
+  except:
+    - schedules
+  before_script:
+    - mkdir -p "$MOUNT_POINT"
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+  script:
+    - sed -i "s|FROM alpine|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
+    - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
+    - |
+      if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
+          echo "Building mail dev image" 
+          docker build -t "${CI_REGISTRY_IMAGE}-mail":dev -f mail_service/Dockerfile ./mail_service  | tee ${MOUNT_POINT}/build.log
+          docker push "${CI_REGISTRY_IMAGE}-mail":dev  | tee ${MOUNT_POINT}/push.log
+          docker logout ${CI_REGISTRY}
+          echo "Pushing to docker hub"
+          echo "${DOCKER_HUB_PWD}" | docker login --username "${DOCKER_HUB_USER}" --password-stdin
+          docker tag "${CI_REGISTRY_IMAGE}-mail":dev "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev
+          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+      fi
+    - docker logout
 
-
+  artifacts:
+    paths:
+      - "$MOUNT_POINT/"
+  only:
+    refs:
+      - main
 
 deploy-HH-WP-WEBADMIN-dev:
   stage: deploy-dev
