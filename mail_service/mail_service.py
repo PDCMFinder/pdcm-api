@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 def send_mail():
     sender_email = os.environ["SENDER_EMAIL"]
-    receiver_email = os.environ["SENDER_EMAIL"]
+    receiver_email = os.environ["RECEIVER_EMAIL"]
     message = MIMEMultipart("alternative")
     message["Subject"] = "multipart test"
     message["From"] = sender_email
