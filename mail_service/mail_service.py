@@ -15,6 +15,11 @@ def send_mail():
     message["From"] = sender_email
     message["To"] = receiver_email
     message.add_header("reply-to", "federico@ebi.ac.uk")
+    server = os.environ["SMTP_SERVER"]
+    port = os.environ["SMTP_PORT"]
+    print(
+        f"sender_email: {send_mail} | receiver_email: {receiver_email} | server: {server} | port: {port}"
+    )
 
     # Create the plain-text and HTML version of your message
     text = """\
