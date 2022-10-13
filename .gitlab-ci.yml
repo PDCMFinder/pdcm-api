@@ -223,6 +223,10 @@ deploy-HH-WP-WEBADMIN-dev:
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${DEV_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${DEV_PGRST_DB_SCHEMA}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_DB_URI>|${DEV_PGRST_DB_URI}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SENDER_EMAIL>|${DEV_SENDER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<RECEIVER_EMAIL>|${DEV_RECEIVER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_SERVER>|${DEV_SMTP_SERVER}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_PORT>|${DEV_SMTP_PORT}|g" {} \;
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
     - kubectl config set clusters.local.certificate-authority-data "${HH_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
@@ -230,7 +234,13 @@ deploy-HH-WP-WEBADMIN-dev:
     - kubectl config set-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}" --cluster=local --user=${HH_WP_WEBADMIN_DEV_USER} --namespace="${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl config use-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl version
-
+    - |
+      if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/create-ticket-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/create-ticket-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+        echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
     - |
       if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."

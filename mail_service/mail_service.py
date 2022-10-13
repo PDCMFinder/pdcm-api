@@ -2,13 +2,14 @@ from flask import Flask
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 app = Flask(__name__)
 
 
 def send_mail():
-    sender_email = "no-reply@ebi.ac.uk"
-    receiver_email = "info@cancermodels.org"
+    sender_email = os.environ["SENDER_EMAIL"]
+    receiver_email = os.environ["SENDER_EMAIL"]
     message = MIMEMultipart("alternative")
     message["Subject"] = "multipart test"
     message["From"] = sender_email
@@ -44,8 +45,8 @@ def send_mail():
 
     # Create secure connection with server and send email
 
-    server = smtplib.SMTP("smtp.ebi.ac.uk", 25)
-    server.connect("smtp.ebi.ac.uk", 25)
+    server = smtplib.SMTP(os.environ["SMTP_SERVER"], os.environ["SMTP_PORT"])
+    server.connect(os.environ["SMTP_SERVER"], os.environ["SMTP_PORT"])
     server.sendmail(sender_email, receiver_email, message.as_string())
     server.quit()
 
