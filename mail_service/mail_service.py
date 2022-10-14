@@ -18,7 +18,8 @@ def send_mail():
     server = os.environ["SMTP_SERVER"]
     port = os.environ["SMTP_PORT"]
     print(
-        f"sender_email: {send_mail} | receiver_email: {receiver_email} | server: {server} | port: {port}"
+        f"sender_email: {send_mail} | receiver_email: {receiver_email} | server: {server} | port: {port}",
+        flush=True,
     )
 
     # Create the plain-text and HTML version of your message
