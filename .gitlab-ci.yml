@@ -197,12 +197,12 @@ build_mail_dev_image:
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building mail dev image" 
           docker build -t "${CI_REGISTRY_IMAGE}":mail-dev -f mail_service/Dockerfile ./mail_service  | tee ${MOUNT_POINT}/build.log
-          docker push "${CI_REGISTRY_IMAGE}":mail-dev  | tee ${MOUNT_POINT}/push.log
+          docker push "${CI_REGISTRY_IMAGE}":mail-dev  | tee ${MOUNT_POINT}/push-mail-dev.log
           docker logout ${CI_REGISTRY}
           echo "Pushing to docker hub"
           echo "${DOCKER_HUB_PWD}" | docker login --username "${DOCKER_HUB_USER}" --password-stdin
           docker tag "${CI_REGISTRY_IMAGE}":mail-dev "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":mail-dev
-          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":mail-dev  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":mail-dev  | tee ${MOUNT_POINT}/dockerhub-push-mail-dev.log
       fi
     - docker logout
 
