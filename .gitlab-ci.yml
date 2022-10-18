@@ -178,7 +178,7 @@ build_main_dev_image:
       - "$MOUNT_POINT/"
   only:
     refs:
-      - main
+      - dev
 
 build_mail_dev_image:
   stage: build-dev
@@ -211,7 +211,7 @@ build_mail_dev_image:
       - "$MOUNT_POINT/"
   only:
     refs:
-      - main
+      - dev
 
 deploy-HH-WP-WEBADMIN-dev:
   stage: deploy-dev
@@ -254,4 +254,4 @@ deploy-HH-WP-WEBADMIN-dev:
       - "$DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev"
   only:
     refs:
-      - main
+      - dev
