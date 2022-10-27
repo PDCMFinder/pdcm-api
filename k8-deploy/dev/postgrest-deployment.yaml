@@ -47,10 +47,6 @@ spec:
               value: "<SMTP_SERVER>"
             - name: SMTP_PORT
               value: "<SMTP_PORT>"
-          ports:
-            - containerPort: 5000
-              name: http
-              protocol: TCP
           resources: {}
       restartPolicy: Always
 status: {}
