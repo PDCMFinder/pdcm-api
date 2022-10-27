@@ -241,6 +241,7 @@ deploy-HH-WP-WEBADMIN-dev:
       else
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+    - kubectl rollout status -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml
     - kubectl get pods,service,deploy,replicaset,ing
   artifacts:
     paths:
