@@ -31,6 +31,8 @@ spec:
               value: "<SMTP_SERVER>"
             - name: SMTP_PORT
               value: "<SMTP_PORT>"
+            - name: SECRET_RECAPTCHA
+              value: "<SECRET_RECAPTCHA>"
           ports:
             - containerPort: 80
               name: http

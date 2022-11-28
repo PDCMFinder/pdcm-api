@@ -227,6 +227,7 @@ deploy-HH-WP-WEBADMIN-dev:
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<RECEIVER_EMAIL>|${DEV_RECEIVER_EMAIL}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_SERVER>|${DEV_SMTP_SERVER}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_PORT>|${DEV_SMTP_PORT}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SECRET_RECAPTCHA>|${SECRET_RECAPTCHA}|g" {} \;
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
     - kubectl config set clusters.local.certificate-authority-data "${HH_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"

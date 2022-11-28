@@ -5,6 +5,9 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from urllib.parse import urlencode
+from urllib.request import urlopen
+import json
 
 app = Flask(__name__)
 
@@ -18,12 +21,8 @@ def send_mail(user_email, user_name, category, subject, message_body, attachment
     message["From"] = sender_email
     message["To"] = receiver_email
     message.add_header("reply-to", reply_to)
-    server = os.environ["SMTP_SERVER"]
+    smtp_server = os.environ["SMTP_SERVER"]
     port = os.environ["SMTP_PORT"]
-    print(
-        f"sender_email: {user_email} | receiver_email: {receiver_email} | server: {server} | port: {port}",
-        flush=True,
-    )
 
     # Create the plain-text and HTML version of your message
     message.attach(MIMEText(message_body, "plain"))
@@ -37,21 +36,40 @@ def send_mail(user_email, user_name, category, subject, message_body, attachment
 
         message.attach(part)
 
-    server = smtplib.SMTP(os.environ["SMTP_SERVER"], os.environ["SMTP_PORT"])
-    server.connect(os.environ["SMTP_SERVER"], os.environ["SMTP_PORT"])
+    server = smtplib.SMTP(smtp_server, port)
+    server.connect(smtp_server, port)
     server.sendmail(sender_email, receiver_email, message.as_string())
     server.quit()
+
+
+def validate_recaptcha(recaptcha_token: str, remote_ip: str):
+    URIReCaptcha = "https://www.google.com/recaptcha/api/siteverify"
+    private_recaptcha = os.environ["SECRET_RECAPTCHA"]
+    remote_ip = request.remote_addr
+    params = urlencode(
+        {
+            "secret": private_recaptcha,
+            "response": recaptcha_token,
+            "remote_ip": remote_ip,
+        }
+    )
+    data = urlopen(URIReCaptcha, params.encode("utf-8")).read()
+    result = json.loads(data)
+    success = result.get("success", None)
+    return success
 
 
 @app.route("/api/create-ticket/", methods=["POST"])
 def hello_world():
     json_body = request.get_json()
-    send_mail(
-        json_body["user_email"],
-        json_body["user_name"],
-        json_body["category"],
-        json_body["subject"],
-        json_body["message_body"],
-        None,
-    )
-    return request.get_json()
+    if validate_recaptcha(json_body["recaptchaToken"], request.remote_addr):
+        send_mail(
+            json_body["email"],
+            json_body["name"],
+            "Feedback form",
+            "Website feedback",
+            json_body["feedback"],
+            None,
+        )
+        return request.get_json()
+    return {"error": "invalid-recaptcha"}
