@@ -50,6 +50,10 @@ spec:
               value: "<SMTP_PORT>"
             - name: SECRET_RECAPTCHA
               value: "<SECRET_RECAPTCHA>"
+            - name: HTTP_PROXY
+              value: "<HTTP_PROXY>"
+            - name: HTTPS_PROXY
+              value: "<HTTPS_PROXY>"
           resources: {}
           imagePullPolicy: "Always"
       restartPolicy: Always
