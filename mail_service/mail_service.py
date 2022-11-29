@@ -45,6 +45,8 @@ def send_mail(user_email, user_name, category, subject, message_body, attachment
 def validate_recaptcha(recaptcha_token: str, remote_ip: str):
     URIReCaptcha = "https://www.google.com/recaptcha/api/siteverify"
     private_recaptcha = os.environ["SECRET_RECAPTCHA"]
+    http_proxy = os.environ["HTTP_PROXY"]
+    https_proxy = os.environ["HTTPS_PROXY"]
     remote_ip = request.remote_addr
     params = urlencode(
         {
@@ -53,7 +55,11 @@ def validate_recaptcha(recaptcha_token: str, remote_ip: str):
             "remote_ip": remote_ip,
         }
     )
-    data = urlopen(URIReCaptcha, params.encode("utf-8")).read()
+    data = urlopen(
+        URIReCaptcha,
+        params.encode("utf-8"),
+        proxies={"http": http_proxy, "https": https_proxy},
+    ).read()
     result = json.loads(data)
     success = result.get("success", None)
     return success
