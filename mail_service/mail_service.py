@@ -5,8 +5,7 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
-from urllib.parse import urlencode
-from urllib.request import urlopen
+import urllib
 import json
 
 app = Flask(__name__)
@@ -48,20 +47,23 @@ def validate_recaptcha(recaptcha_token: str, remote_ip: str):
     http_proxy = os.environ["HTTP_PROXY"]
     https_proxy = os.environ["HTTPS_PROXY"]
     remote_ip = request.remote_addr
-    params = urlencode(
+    params = urllib.urlencode(
         {
             "secret": private_recaptcha,
             "response": recaptcha_token,
             "remote_ip": remote_ip,
         }
     )
-    data = urlopen(
-        URIReCaptcha,
-        params.encode("utf-8"),
-        proxies={"http": http_proxy, "https": https_proxy},
-    ).read()
-    result = json.loads(data)
-    success = result.get("success", None)
+    proxy_support = urllib.request.ProxyHandler(
+        {"http": http_proxy, "https": https_proxy}
+    )
+    opener = urllib.request.build_opener(proxy_support)
+    urllib.request.install_opener(opener)
+
+    with urllib.request.urlopen(URIReCaptcha, params.encode("utf-8")) as response:
+        data = response.read()
+        result = json.loads(data)
+        success = result.get("success", None)
     return success
 
 
