@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: postgrest
       tier: frontend
-  strategy: 
+  strategy:
     type: Recreate
   template:
     metadata:
@@ -36,5 +36,25 @@ spec:
               name: http
               protocol: TCP
           resources: {}
+          imagePullPolicy: "Always"
+        - image: "pdxfinder/pdcm-api:mail-prod"
+          name: create-ticket
+          env:
+            - name: SENDER_EMAIL
+              value: "<SENDER_EMAIL>"
+            - name: RECEIVER_EMAIL
+              value: "<RECEIVER_EMAIL>"
+            - name: SMTP_SERVER
+              value: "<SMTP_SERVER>"
+            - name: SMTP_PORT
+              value: "<SMTP_PORT>"
+            - name: SECRET_RECAPTCHA
+              value: "<SECRET_RECAPTCHA>"
+            - name: HTTP_PROXY
+              value: "<HTTP_PROXY>"
+            - name: HTTPS_PROXY
+              value: "<HTTPS_PROXY>"
+          resources: {}
+          imagePullPolicy: "Always"
       restartPolicy: Always
 status: {}

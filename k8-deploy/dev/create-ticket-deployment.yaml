@@ -31,10 +31,13 @@ spec:
               value: "<SMTP_SERVER>"
             - name: SMTP_PORT
               value: "<SMTP_PORT>"
+            - name: SECRET_RECAPTCHA
+              value: "<SECRET_RECAPTCHA>"
           ports:
-            - containerPort: 5000
+            - containerPort: 80
               name: http
               protocol: TCP
           resources: {}
+          imagePullPolicy: "Always"
       restartPolicy: Always
 status: {}

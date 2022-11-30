@@ -48,7 +48,7 @@ stages:
   - build-dev
   - deploy-dev
 
-build_prod_image:
+build_main_prod_image:
   stage: build-prod
   services:
     - name: $CI_REGISTRY/mouse-informatics/dind:latest
@@ -81,6 +81,39 @@ build_prod_image:
     refs:
       - main
 
+build_mail_prod_image:
+  stage: build-prod
+  services:
+    - name: $CI_REGISTRY/mouse-informatics/dind:latest
+      alias: docker
+  except:
+    - schedules
+  before_script:
+    - mkdir -p "$MOUNT_POINT"
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+  script:
+    - sed -i "s|FROM alpine|FROM ${LOCAL_GITLAB_ALPINE_IMAGE}|g" Dockerfile
+    - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
+    - |
+      if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
+          echo "Building mail prod image" 
+          docker build -t "${CI_REGISTRY_IMAGE}":mail-prod -f mail_service/Dockerfile ./mail_service  | tee ${MOUNT_POINT}/build.log
+          docker push "${CI_REGISTRY_IMAGE}":mail-prod  | tee ${MOUNT_POINT}/push-mail-prod.log
+          docker logout ${CI_REGISTRY}
+          echo "Pushing to docker hub"
+          echo "${DOCKER_HUB_PWD}" | docker login --username "${DOCKER_HUB_USER}" --password-stdin
+          docker tag "${CI_REGISTRY_IMAGE}":mail-prod "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":mail-prod
+          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":mail-prod  | tee ${MOUNT_POINT}/dockerhub-push-mail-prod.log
+      fi
+    - docker logout
+
+  artifacts:
+    paths:
+      - "$MOUNT_POINT/"
+  only:
+    refs:
+      - dev
+
 deploy-HH-WP-WEBADMIN-prod:
   stage: deploy-prod
   image: dtzar/helm-kubectl:2.13.0
@@ -91,6 +124,13 @@ deploy-HH-WP-WEBADMIN-prod:
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${PROD_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${PROD_PGRST_DB_SCHEMA}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_DB_URI>|${PROD_PGRST_DB_URI}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SENDER_EMAIL>|${PROD_SENDER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<RECEIVER_EMAIL>|${PROD_RECEIVER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SMTP_SERVER>|${PROD_HH_SMTP_SERVER}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SMTP_PORT>|${PROD_HH_SMTP_PORT}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SECRET_RECAPTCHA>|${SECRET_RECAPTCHA}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<HTTP_PROXY>|${PROD_HH_HTTP_PROXY}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<HTTPS_PROXY>|${PROD_HH_HTTPS_PROXY}|g" {} \;
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
     - kubectl config set clusters.local.certificate-authority-data "${HH_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
@@ -98,7 +138,6 @@ deploy-HH-WP-WEBADMIN-prod:
     - kubectl config set-context "${HH_WP_WEBADMIN_PROD_NAMESPACE}" --cluster=local --user=${HH_WP_WEBADMIN_PROD_USER} --namespace="${HH_WP_WEBADMIN_PROD_NAMESPACE}"
     - kubectl config use-context "${HH_WP_WEBADMIN_PROD_NAMESPACE}"
     - kubectl version
-
     - |
       if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/postgrest-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
@@ -106,6 +145,7 @@ deploy-HH-WP-WEBADMIN-prod:
       else
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+    - kubectl rollout status -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/postgrest-deployment.yaml
     - kubectl get pods,service,deploy,replicaset,ing
   artifacts:
     paths:
@@ -124,6 +164,13 @@ deploy-HX-WP-WEBADMIN-sec:
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${SEC_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${SEC_PGRST_DB_SCHEMA}|g" {} \;
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_DB_URI>|${SEC_PGRST_DB_URI}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SENDER_EMAIL>|${PROD_SENDER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<RECEIVER_EMAIL>|${PROD_RECEIVER_EMAIL}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SMTP_SERVER>|${PROD_HX_SMTP_SERVER}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SMTP_PORT>|${PROD_HX_SMTP_PORT}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<SECRET_RECAPTCHA>|${SECRET_RECAPTCHA}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<HTTP_PROXY>|${PROD_HX_HTTP_PROXY}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<HTTPS_PROXY>|${PROD_HX_HTTPS_PROXY}|g" {} \;
   script:
     - kubectl config set-cluster local --server="${HX_WP_WEBADMIN_ENDPOINT}"
     - kubectl config set clusters.local.certificate-authority-data "${HX_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
@@ -139,6 +186,7 @@ deploy-HX-WP-WEBADMIN-sec:
       else
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+    - kubectl rollout status -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-sec/postgrest-deployment.yaml
     - kubectl get pods,service,deploy,replicaset,ing
   artifacts:
     paths:
@@ -227,6 +275,9 @@ deploy-HH-WP-WEBADMIN-dev:
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<RECEIVER_EMAIL>|${DEV_RECEIVER_EMAIL}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_SERVER>|${DEV_SMTP_SERVER}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SMTP_PORT>|${DEV_SMTP_PORT}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<SECRET_RECAPTCHA>|${SECRET_RECAPTCHA}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<HTTP_PROXY>|${DEV_HH_HTTP_PROXY}|g" {} \;
+    - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<HTTPS_PROXY>|${DEV_HH_HTTPS_PROXY}|g" {} \;
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
     - kubectl config set clusters.local.certificate-authority-data "${HH_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
@@ -235,19 +286,13 @@ deploy-HH-WP-WEBADMIN-dev:
     - kubectl config use-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl version
     - |
-      if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/create-ticket-deployment.yaml --record | grep -q unchanged; then
-          echo "=> Patching deployment to force image update."
-          kubectl patch -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/create-ticket-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-      else
-        echo "=> Deployment apply has changed the object, no need to force image update."
-      fi
-    - |
       if kubectl apply -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
           kubectl patch -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
       else
         echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+    - kubectl rollout status -f $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/postgrest-deployment.yaml
     - kubectl get pods,service,deploy,replicaset,ing
   artifacts:
     paths:
