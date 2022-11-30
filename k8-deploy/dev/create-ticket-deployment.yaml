@@ -38,5 +38,6 @@ spec:
               name: http
               protocol: TCP
           resources: {}
+          imagePullPolicy: "Always"
       restartPolicy: Always
 status: {}
