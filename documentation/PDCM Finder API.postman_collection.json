@@ -1,0 +1,2286 @@
+{
+	"info": {
+		"_postman_id": "1b13b7de-49b4-47c4-b6d0-a705fc9b0f75",
+		"name": "PDCM Finder API",
+		"description": "API to access PDCM Finder data\n\nPatient-derived cancer models (PDCMs) are a powerful oncology research platform for studying tumour biology, mechanisms of drug response and resistance and for testing personalised medicine. Distributed nature of repositories for PDCMs (xenografts, organoids and cell lines) and the use of different metadata standards for describing model''s characteristics make it difficult for researchers to identify suitable PDCM models relevant to specific cancer research questions.\n\nPDCM Finder aims to solve this problem by providing harmonized and integrated model attributes to support consistent searching across the originating resources.\n\n## PostgREST and API usage\n\nWe use [PostgREST](https://postgrest.org/en/stable/index.html) to automatically create endpoints from a set of views that define our public API. The resulting endpoints expect a set of operators when using them. These table shows some of them:\n\n| **Abbreviation** | **SQL** | **Meaning** |\n| --- | --- | --- |\n| eq | `=` | equals |\n| gt | `>` | greater than |\n| gte | `>=` | greater than or equal |\n| lt | `<` | less than |\n| lte | `<=` | less than or equal |\n| neq | `<>` or `!=` | not equal |\n| like | `LIKE` | LIKE operator (to avoid URL encoding you can use \\* as an alias of the percent sign % for the pattern) |\n| ilike | `ILIKE` | ILIKE operator (to avoid URL encoding you can use \\* as an alias of the percent sign % for the pattern) |\n| in | `IN` | one of a list of values, e.g. ?a=in.(1,2,3) – also supports commas in quoted strings like ?a=in.(\"hi,there\",\"yes,you\") |\n| is | `IS` | checking for exact equality (null,true,false,unknown) |\n| not | `NOT` | negates another operator, |\n| or | `OR` | logical OR |\n| and | `AND` | logical AND |\n\nA complete table and additional documentation about how to use PostgREST can be found [here](https://postgrest.org/en/stable/api.html).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6493399"
+	},
+	"item": [
+		{
+			"name": "Metadata",
+			"item": [
+				{
+					"name": "Model metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "0-19",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=\"exact\"",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/model_metadata?model_id=eq.TM01002&data_source=eq.JAX&provider_name=eq.The Jackson laboratory&type=eq.xenograft&host_strain_name=eq.nsg&host_strain_nomenclature=eq.NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ&engraftment_site=eq.Not Provided&engraftment_type=eq.Heterotopic&engraftment_sample_type=eq.Surgical Resection (fragment)&engraftment_sample_state=eq.Not Provided&passage_number=eq.1&histology=eq.Bladder Papillary Urothelial Carcinoma&cancer_system=eq.Urinary System Cancer&primary_site=eq.bladder&collection_site=eq.bladder&tumor_type=eq.Primary&cancer_grade=eq.Grade:low&cancer_grading_system=eq.AJCC&cancer_stage=eq.AJCC 0 - in situ&patient_age=eq.Not specified&patient_sex=eq.male&patient_ethnicity=eq.Not Collected&patient_treatment_status=eq.Not specified&pubmed_ids=eq.PMID: 26270481&europdx_access_modalities=eq.Not Applicable&accessibility=eq.Academia and Industry&contact_name_list=eq.micetech&contact_email_list=eq.micetech@jax.org&contact_form_url=eq.http://tumor.informatics.jax.org/mtbwi/pdxRequest.do?mice=TM01002&source_database_url=eq.http://tumor.informatics.jax.org/mtbwi/pdxDetails.do?modelID=TM01002&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"model_metadata"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.TM01002",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.JAX",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "provider_name",
+									"value": "eq.The Jackson laboratory",
+									"description": "Provider full name"
+								},
+								{
+									"key": "type",
+									"value": "eq.xenograft",
+									"description": "Model type (xenograft, cell_line, …)"
+								},
+								{
+									"key": "host_strain_name",
+									"value": "eq.nsg",
+									"description": "Host mouse strain name (e.g. NOD-SCID, NSG, etc)"
+								},
+								{
+									"key": "host_strain_nomenclature",
+									"value": "eq.NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ",
+									"description": "The full nomenclature form of the host mouse strain name"
+								},
+								{
+									"key": "engraftment_site",
+									"value": "eq.Not Provided",
+									"description": "Organ or anatomical site used for the tumour engraftment (e.g. mammary fat pad, Right flank)"
+								},
+								{
+									"key": "engraftment_type",
+									"value": "eq.Heterotopic",
+									"description": "Orthotopic: if the tumour was engrafted at a corresponding anatomical site. Hererotopic: If grafted subcuteanously"
+								},
+								{
+									"key": "engraftment_sample_type",
+									"value": "eq.Surgical Resection (fragment)",
+									"description": "Description of the type of material grafted into the mouse. (e.g. tissue fragments, cell suspension)"
+								},
+								{
+									"key": "engraftment_sample_state",
+									"value": "eq.Not Provided",
+									"description": "PDX Engraftment material state (e.g. fresh or frozen)"
+								},
+								{
+									"key": "passage_number",
+									"value": "eq.1",
+									"description": "Passage number"
+								},
+								{
+									"key": "histology",
+									"value": "eq.Bladder Papillary Urothelial Carcinoma",
+									"description": "Diagnosis at time of collection of the patient tumor"
+								},
+								{
+									"key": "cancer_system",
+									"value": "eq.Urinary System Cancer",
+									"description": "Cancer System"
+								},
+								{
+									"key": "primary_site",
+									"value": "eq.bladder",
+									"description": "Site of the primary tumor where primary cancer is originating from (may not correspond to the site of the current tissue sample)"
+								},
+								{
+									"key": "collection_site",
+									"value": "eq.bladder",
+									"description": "Site of collection of the tissue sample (can be different than the primary site if tumour type is metastatic)"
+								},
+								{
+									"key": "tumor_type",
+									"value": "eq.Primary",
+									"description": "Collected tumor type"
+								},
+								{
+									"key": "cancer_grade",
+									"value": "eq.Grade:low",
+									"description": "The implanted tumor grade value"
+								},
+								{
+									"key": "cancer_grading_system",
+									"value": "eq.AJCC",
+									"description": "Stage classification system used to describe the stage"
+								},
+								{
+									"key": "cancer_stage",
+									"value": "eq.AJCC 0 - in situ",
+									"description": "Stage of the patient at the time of collection"
+								},
+								{
+									"key": "patient_age",
+									"value": "eq.Not specified",
+									"description": "Patient age at collection"
+								},
+								{
+									"key": "patient_sex",
+									"value": "eq.male",
+									"description": "Sex of the patient"
+								},
+								{
+									"key": "patient_ethnicity",
+									"value": "eq.Not Collected",
+									"description": "Patient Ethnic group"
+								},
+								{
+									"key": "patient_treatment_status",
+									"value": "eq.Not specified",
+									"description": "Patient treatment status"
+								},
+								{
+									"key": "pubmed_ids",
+									"value": "eq.PMID: 26270481",
+									"description": "PubMed ids related to the model"
+								},
+								{
+									"key": "europdx_access_modalities",
+									"value": "eq.Not Applicable",
+									"description": "If a model is part of EUROPDX consortium, then this field defines if the model is accessible for transnational access through the EDIReX infrastructure, or only on a collaborative basis"
+								},
+								{
+									"key": "accessibility",
+									"value": "eq.Academia and Industry",
+									"description": "Defines any limitation of access of the model per type of users like academia only, industry and academia, or national limitation"
+								},
+								{
+									"key": "contact_name_list",
+									"value": "eq.micetech",
+									"description": "List of names of the contact people for the model"
+								},
+								{
+									"key": "contact_email_list",
+									"value": "eq.micetech@jax.org",
+									"description": "Emails of the contact names for the model"
+								},
+								{
+									"key": "contact_form_url",
+									"value": "eq.http://tumor.informatics.jax.org/mtbwi/pdxRequest.do?mice=TM01002",
+									"description": "URL to the providers resource for each model"
+								},
+								{
+									"key": "source_database_url",
+									"value": "eq.http://tumor.informatics.jax.org/mtbwi/pdxDetails.do?modelID=TM01002",
+									"description": "URL to the source database for each model"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Metadata associated to a model."
+					},
+					"response": [
+						{
+							"name": "Get metadata for a particular model",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://0.0.0.0:3005/model_metadata?model_id=eq.TM01002&select=*&order=model_id.asc&offset=0&limit=10",
+									"protocol": "http",
+									"host": [
+										"0",
+										"0",
+										"0",
+										"0"
+									],
+									"port": "3005",
+									"path": [
+										"model_metadata"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "eq.TM01002"
+										},
+										{
+											"key": "data_source",
+											"value": "eq.JAX",
+											"disabled": true
+										},
+										{
+											"key": "provider_name",
+											"value": "eq.The Jackson laboratory",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "eq.xenograft",
+											"disabled": true
+										},
+										{
+											"key": "host_strain_name",
+											"value": "eq.nsg",
+											"disabled": true
+										},
+										{
+											"key": "host_strain_nomenclature",
+											"value": "eq.NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ",
+											"disabled": true
+										},
+										{
+											"key": "engraftment_site",
+											"value": "eq.Not Provided",
+											"disabled": true
+										},
+										{
+											"key": "engraftment_type",
+											"value": "eq.Heterotopic",
+											"disabled": true
+										},
+										{
+											"key": "engraftment_sample_type",
+											"value": "eq.Surgical Resection (fragment)",
+											"disabled": true
+										},
+										{
+											"key": "engraftment_sample_state",
+											"value": "eq.Not Provided",
+											"disabled": true
+										},
+										{
+											"key": "passage_number",
+											"value": "eq.1",
+											"disabled": true
+										},
+										{
+											"key": "histology",
+											"value": "eq.Bladder Papillary Urothelial Carcinoma",
+											"disabled": true
+										},
+										{
+											"key": "cancer_system",
+											"value": "eq.Urinary System Cancer",
+											"disabled": true
+										},
+										{
+											"key": "primary_site",
+											"value": "eq.bladder",
+											"disabled": true
+										},
+										{
+											"key": "collection_site",
+											"value": "eq.bladder",
+											"disabled": true
+										},
+										{
+											"key": "tumor_type",
+											"value": "eq.Primary",
+											"disabled": true
+										},
+										{
+											"key": "cancer_grade",
+											"value": "eq.Grade:low",
+											"disabled": true
+										},
+										{
+											"key": "cancer_grading_system",
+											"value": "eq.AJCC",
+											"disabled": true
+										},
+										{
+											"key": "cancer_stage",
+											"value": "eq.AJCC 0 - in situ",
+											"disabled": true
+										},
+										{
+											"key": "patient_age",
+											"value": "eq.Not specified",
+											"disabled": true
+										},
+										{
+											"key": "patient_sex",
+											"value": "eq.male",
+											"disabled": true
+										},
+										{
+											"key": "patient_ethnicity",
+											"value": "eq.Not Collected",
+											"disabled": true
+										},
+										{
+											"key": "patient_treatment_status",
+											"value": "eq.Not specified",
+											"disabled": true
+										},
+										{
+											"key": "pubmed_ids",
+											"value": "eq.PMID: 26270481",
+											"disabled": true
+										},
+										{
+											"key": "europdx_access_modalities",
+											"value": "eq.Not Applicable",
+											"disabled": true
+										},
+										{
+											"key": "accessibility",
+											"value": "eq.Academia and Industry",
+											"disabled": true
+										},
+										{
+											"key": "contact_name_list",
+											"value": "eq.micetech",
+											"disabled": true
+										},
+										{
+											"key": "contact_email_list",
+											"value": "eq.micetech@jax.org",
+											"disabled": true
+										},
+										{
+											"key": "contact_form_url",
+											"value": "eq.http://tumor.informatics.jax.org/mtbwi/pdxRequest.do?mice=TM01002",
+											"disabled": true
+										},
+										{
+											"key": "source_database_url",
+											"value": "eq.http://tumor.informatics.jax.org/mtbwi/pdxDetails.do?modelID=TM01002",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "*"
+										},
+										{
+											"key": "order",
+											"value": "model_id.asc"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model_id\": \"TM01002\",\n        \"data_source\": \"JAX\",\n        \"provider_name\": \"The Jackson laboratory\",\n        \"type\": \"xenograft\",\n        \"host_strain_name\": \"nsg\",\n        \"host_strain_nomenclature\": \"NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ\",\n        \"engraftment_site\": \"Not Provided\",\n        \"engraftment_type\": \"Heterotopic\",\n        \"engraftment_sample_type\": \"Surgical Resection (fragment)\",\n        \"engraftment_sample_state\": \"Not Provided\",\n        \"passage_number\": \"1\",\n        \"histology\": \"Bladder Papillary Urothelial Carcinoma\",\n        \"cancer_system\": \"Urinary System Cancer\",\n        \"primary_site\": \"bladder\",\n        \"collection_site\": \"bladder\",\n        \"tumor_type\": \"Primary\",\n        \"cancer_grade\": \"Grade:low\",\n        \"cancer_grading_system\": \"AJCC\",\n        \"cancer_stage\": \"AJCC 0 - in situ\",\n        \"patient_age\": \"Not specified\",\n        \"patient_sex\": \"male\",\n        \"patient_ethnicity\": \"Not Collected\",\n        \"patient_treatment_status\": \"Not specified\",\n        \"pubmed_ids\": \"PMID: 26270481\",\n        \"europdx_access_modalities\": \"Not Applicable\",\n        \"accessibility\": \"Academia and Industry\",\n        \"contact_name_list\": \"micetech\",\n        \"contact_email_list\": \"micetech@jax.org\",\n        \"contact_form_url\": \"http://tumor.informatics.jax.org/mtbwi/pdxRequest.do?mice=TM01002\",\n        \"source_database_url\": \"http://tumor.informatics.jax.org/mtbwi/pdxDetails.do?modelID=TM01002\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Quality assurance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/model_quality_assurance?model_id=eq.T127&data_source=eq.NKI&description=eq.concordance between xenograft and patient tumour&passages_tested=eq.7&validation_technique=eq.Histology&validation_host_strain_nomenclature=eq.NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"model_quality_assurance"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.T127",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.NKI",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "description",
+									"value": "eq.concordance between xenograft and patient tumour",
+									"description": "Short description of what was compared and what was the result: (e.g. high, good, moderate concordance between xenograft, 'model validated against histological features of same diagnosis' or 'not determined')"
+								},
+								{
+									"key": "passages_tested",
+									"value": "eq.7",
+									"description": "List of all passages where validation was performed. Passage 0 correspond to first engraftment"
+								},
+								{
+									"key": "validation_technique",
+									"value": "eq.Histology",
+									"description": "Any technique used to validate PDX against their original patient tumour, including fingerprinting, histology, immunohistochemistry"
+								},
+								{
+									"key": "validation_host_strain_nomenclature",
+									"value": "eq.NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ",
+									"description": "Validation host mouse strain, following mouse strain nomenclature from MGI JAX"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Quality assurance data related to a model."
+					},
+					"response": [
+						{
+							"name": "Get quality assurance data for a particular model",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://0.0.0.0:3005/model_quality_assurance?model_id=eq.T127",
+									"protocol": "http",
+									"host": [
+										"0",
+										"0",
+										"0",
+										"0"
+									],
+									"port": "3005",
+									"path": [
+										"model_quality_assurance"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "eq.T127"
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "passages_tested",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "validation_technique",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "validation_host_strain_nomenclature",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model_id\": \"T127\",\n        \"data_source\": \"NKI\",\n        \"description\": \"concordance between xenograft and patient tumour\",\n        \"passages_tested\": \"7\",\n        \"validation_technique\": \"Histology\",\n        \"validation_host_strain_nomenclature\": \"NOD.Cg-Prkdc<sup>scid</sup> Il2rg<sup>tm1Wjl</sup>/SzJ\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Model Molecular Metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/model_molecular_metadata?model_id=eq.933738-175-T&data_source=eq.PDMR&source=eq.xenograft&sample_id=eq.933738-175-T-W55VZ2&xenograft_passage=eq.1&raw_data_url=eq.ERR4226925,https://www.ebi.ac.uk/ena/data/view/ERR4226925&data_type=eq.mutation&platform_name=eq.Illumina HiSeq 2000/2500&data_exists=eq.TRUE&data_restricted=eq.FALSE&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"model_molecular_metadata"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.933738-175-T",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.PDMR",
+									"description": "Data source of the model"
+								},
+								{
+									"key": "source",
+									"value": "eq.xenograft",
+									"description": "(patient, xenograft, cell)"
+								},
+								{
+									"key": "sample_id",
+									"value": "eq.933738-175-T-W55VZ2",
+									"description": "Sample identifier given by the provider"
+								},
+								{
+									"key": "xenograft_passage",
+									"value": "eq.1",
+									"description": "Passage number of the sample"
+								},
+								{
+									"key": "raw_data_url",
+									"value": "eq.ERR4226925,https://www.ebi.ac.uk/ena/data/view/ERR4226925",
+									"description": "URL where the raw data could be found"
+								},
+								{
+									"key": "data_type",
+									"value": "eq.mutation",
+									"description": "Type of molecular data"
+								},
+								{
+									"key": "platform_name",
+									"value": "eq.Illumina HiSeq 2000/2500",
+									"description": "Name of the platform technology used to produce the molecular characterization"
+								},
+								{
+									"key": "data_exists",
+									"value": "eq.TRUE",
+									"description": "True or False depending on whether or not there is molecular data for this sample"
+								},
+								{
+									"key": "data_restricted",
+									"value": "eq.FALSE",
+									"description": "True or False depending on whether or not the molecular data is restricted (meaning provider need to be contacted directly to get the data from them)."
+								},
+								{
+									"key": "molecular_characterization_id",
+									"value": "Lorem est sint tempor",
+									"disabled": true
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Information about the molecular data that is available for each sample."
+					},
+					"response": [
+						{
+							"name": "Get molecular metadata for a particular model",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://0.0.0.0:3005/model_molecular_metadata?model_id=eq.T127",
+									"protocol": "http",
+									"host": [
+										"0",
+										"0",
+										"0",
+										"0"
+									],
+									"port": "3005",
+									"path": [
+										"model_molecular_metadata"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "eq.T127"
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "sample_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "xenograft_passage",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "raw_data_url",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_type",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "platform_name",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_exists",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_restricted",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "molecular_characterization_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model_id\": \"933738-175-T\",\n        \"data_source\": \"PDMR\",\n        \"source\": \"xenograft\",\n        \"sample_id\": \"933738-175-T-W55VZ2\",\n        \"xenograft_passage\": \"1\",\n        \"raw_data_url\": \"ERR4226925,https://www.ebi.ac.uk/ena/data/view/ERR4226925\",\n        \"data_type\": \"mutation\",\n        \"platform_name\": \"Illumina HiSeq 2000/2500\",\n        \"data_exists\": \"TRUE\",\n        \"data_restricted\": \"FALSE\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "Metadata available for the models"
+		},
+		{
+			"name": "Treatment",
+			"item": [
+				{
+					"name": "Patient treatment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor"
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items"
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/patient_treatment_extended?model_id=eq.EMC0073PM&data_source=eq.TRACE&patient_id=eq.PTX-EMC-025&patient_age=eq.50 - 59&patient_sex=eq.female&patient_ethnicity=eq.Not Collected&patient_treatment_status=eq.Treatment naive&histology=eq.Uterine Corpus Myxoid Leiomyosarcoma&treatment=eq.Ifosfamide&response=eq.Progressive Disease&dose=eq.3 g/m2 on days 1, 2 and 3 every 21 days&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"patient_treatment_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.EMC0073PM",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.TRACE",
+									"description": "Data source of the model"
+								},
+								{
+									"key": "patient_id",
+									"value": "eq.PTX-EMC-025",
+									"description": "Anonymous/de-identified provider ID for the patient"
+								},
+								{
+									"key": "patient_age",
+									"value": "eq.50 - 59",
+									"description": "Patient age at collection"
+								},
+								{
+									"key": "patient_sex",
+									"value": "eq.female",
+									"description": "Sex of the patient"
+								},
+								{
+									"key": "patient_ethnicity",
+									"value": "eq.Not Collected",
+									"description": "Patient Ethnic group"
+								},
+								{
+									"key": "patient_treatment_status",
+									"value": "eq.Treatment naive",
+									"description": "Status of the patient treatment"
+								},
+								{
+									"key": "histology",
+									"value": "eq.Uterine Corpus Myxoid Leiomyosarcoma",
+									"description": "Diagnosis at time of collection of the patient tumor"
+								},
+								{
+									"key": "treatment",
+									"value": "eq.Ifosfamide",
+									"description": "Treatment name. It can be surgery, radiotherapy,  drug name  or drug combination"
+								},
+								{
+									"key": "response",
+									"value": "eq.Progressive Disease",
+									"description": "Response of prior treatment"
+								},
+								{
+									"key": "dose",
+									"value": "eq.3 g/m2 on days 1, 2 and 3 every 21 days",
+									"description": "Treatment dose and unit"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Information about treatments in patients"
+					},
+					"response": [
+						{
+							"name": "Get patient treatment data for a particular model",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/patient_treatment_extended?model_id=eq.EMC0073PM",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"patient_treatment_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "eq.EMC0073PM"
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "patient_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "patient_age",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "patient_sex",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "patient_ethnicity",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "patient_treatment_status",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "histology",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "treatment",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "response",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "dose",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model_id\": \"EMC0073PM\",\n        \"data_source\": \"TRACE\",\n        \"patient_id\": \"PTX-EMC-025\",\n        \"patient_age\": \"50 - 59\",\n        \"patient_sex\": \"female\",\n        \"patient_ethnicity\": \"Not Collected\",\n        \"patient_treatment_status\": \"Treatment naive\",\n        \"histology\": \"Uterine Corpus Myxoid Leiomyosarcoma\",\n        \"treatment\": \"Ifosfamide\",\n        \"response\": \"Progressive Disease\",\n        \"dose\": \"3 g/m2 on days 1, 2 and 3 every 21 days\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Drug dosing",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor"
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items"
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/drug_dosing_extended?model_id=eq.NIBRX-2846&data_source=eq.DFCI-CPDM&histology=eq.Colon Adenocarcinoma&treatment=eq.Fluorouracil&response=eq.Progressive Disease&dose=eq.75 mg/kg&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"drug_dosing_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.NIBRX-2846",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.DFCI-CPDM",
+									"description": "Data source of the model"
+								},
+								{
+									"key": "histology",
+									"value": "eq.Colon Adenocarcinoma",
+									"description": "Diagnosis at time of collection of the patient tumor"
+								},
+								{
+									"key": "treatment",
+									"value": "eq.Fluorouracil",
+									"description": "Treatment name. It can be surgery, radiotherapy,  drug name  or drug combination"
+								},
+								{
+									"key": "response",
+									"value": "eq.Progressive Disease",
+									"description": "Response of prior treatment"
+								},
+								{
+									"key": "dose",
+									"value": "eq.75 mg/kg",
+									"description": "Treatment dose and unit"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Information about treatments in models"
+					},
+					"response": [
+						{
+							"name": "Get drug dosing data for a particular model",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/drug_dosing_extended?model_id=eq.NIBRX-2846",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"drug_dosing_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "eq.NIBRX-2846"
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "histology",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "treatment",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "response",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "dose",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model_id\": \"NIBRX-2846\",\n        \"data_source\": \"DFCI-CPDM\",\n        \"histology\": \"Colon Adenocarcinoma\",\n        \"treatment\": \"Fluorouracil\",\n        \"response\": \"Progressive Disease\",\n        \"dose\": \"75 mg/kg\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "Treatment data for patients or models. It contains information about the treatment, used dose, and the response."
+		},
+		{
+			"name": "Molecular Data",
+			"item": [
+				{
+					"name": "Mutation molecular data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mutation_data_extended?model_id=eq.T127&sample_id=eq.T127-primary&source=eq.patient&hgnc_symbol=eq.MUC3A&amino_acid_change=eq.A15S&consequence=eq.missense_variant&read_depth=eq.87&allele_frequency=eq.0.3678160919540229&seq_start_position=eq.100949667&ref_allele=eq.G&alt_allele=eq.T&data_source=eq.NKI&select=*&order=model_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mutation_data_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.T127",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "sample_id",
+									"value": "eq.T127-primary",
+									"description": "Sample identifier given by the provider"
+								},
+								{
+									"key": "source",
+									"value": "eq.patient",
+									"description": "(patient, xenograft, cell)"
+								},
+								{
+									"key": "molecular_characterization_id",
+									"value": "Lorem est sint tempor",
+									"disabled": true
+								},
+								{
+									"key": "hgnc_symbol",
+									"value": "eq.MUC3A",
+									"description": "Gene symbol"
+								},
+								{
+									"key": "amino_acid_change",
+									"value": "eq.A15S",
+									"description": "Changes in the amino acid due to the variant"
+								},
+								{
+									"key": "consequence",
+									"value": "eq.missense_variant",
+									"description": "Genomic consequence of this variant, for example: insertion of a codon caused frameshift variation will be considered frameshift variant "
+								},
+								{
+									"key": "read_depth",
+									"value": "eq.87",
+									"description": "Read depth, the number of times each individual base was sequenced"
+								},
+								{
+									"key": "allele_frequency",
+									"value": "eq.0.3678160919540229",
+									"description": "Allele frequency, the relative frequency of an allele in a population"
+								},
+								{
+									"key": "seq_start_position",
+									"value": "eq.100949667",
+									"description": "Location on the genome at which the variant is found"
+								},
+								{
+									"key": "ref_allele",
+									"value": "eq.G",
+									"description": "The base seen in the reference genome"
+								},
+								{
+									"key": "alt_allele",
+									"value": "eq.T",
+									"description": "The base other than the reference allele seen at the locus"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.NKI",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "model_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Mutation data with the model and sample it comes from."
+					},
+					"response": [
+						{
+							"name": "Get mutation molecular data for a specific sample",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor"
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items"
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mutation_data_extended?sample_id=eq.T127-primary&select=*&order=sample_id.asc&offset=0&limit=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mutation_data_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "sample_id",
+											"value": "eq.T127-primary"
+										},
+										{
+											"key": "source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "molecular_characterization_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "hgnc_symbol",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "amino_acid_change",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "consequence",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "read_depth",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "allele_frequency",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "seq_start_position",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "ref_allele",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "alt_allele",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "*"
+										},
+										{
+											"key": "order",
+											"value": "sample_id.asc"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"NOX1\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"3_prime_UTR_variant\",\n      \"read_depth\":\"150\",\n      \"allele_frequency\":\"1.0\",\n      \"seq_start_position\":\"100843366\",\n      \"ref_allele\":\"TAAG\",\n      \"alt_allele\":\"T\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"MUC3A\",\n      \"amino_acid_change\":\"A15S\",\n      \"consequence\":\"missense_variant\",\n      \"read_depth\":\"87\",\n      \"allele_frequency\":\"0.3678160919540229\",\n      \"seq_start_position\":\"100949667\",\n      \"ref_allele\":\"G\",\n      \"alt_allele\":\"T\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"MUC3A\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"intron_variant\",\n      \"read_depth\":\"83\",\n      \"allele_frequency\":\"0.21686746987951808\",\n      \"seq_start_position\":\"100949763\",\n      \"ref_allele\":\"G\",\n      \"alt_allele\":\"C\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"MUC3A\",\n      \"amino_acid_change\":\"T2431A\",\n      \"consequence\":\"missense_variant\",\n      \"read_depth\":\"498\",\n      \"allele_frequency\":\"0.17871485943775106\",\n      \"seq_start_position\":\"100959070\",\n      \"ref_allele\":\"A\",\n      \"alt_allele\":\"G\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"WDR1\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"5_prime_UTR_variant\",\n      \"read_depth\":\"39\",\n      \"allele_frequency\":\"0.4358974358974359\",\n      \"seq_start_position\":\"10116753\",\n      \"ref_allele\":\"C\",\n      \"alt_allele\":\"G\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"PPP2R5C\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"intron_variant\",\n      \"read_depth\":\"199\",\n      \"allele_frequency\":\"0.04522613065326633\",\n      \"seq_start_position\":\"101836153\",\n      \"ref_allele\":\"GT\",\n      \"alt_allele\":\"G\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"IRAK2\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"intron_variant\",\n      \"read_depth\":\"74\",\n      \"allele_frequency\":\"1.0\",\n      \"seq_start_position\":\"10217078\",\n      \"ref_allele\":\"G\",\n      \"alt_allele\":\"C\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"TECPR2\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"intron_variant\",\n      \"read_depth\":\"204\",\n      \"allele_frequency\":\"1.0\",\n      \"seq_start_position\":\"102452349\",\n      \"ref_allele\":\"T\",\n      \"alt_allele\":\"C\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"LRWD1\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"intron_variant\",\n      \"read_depth\":\"393\",\n      \"allele_frequency\":\"0.3460559796437659\",\n      \"seq_start_position\":\"102472646\",\n      \"ref_allele\":\"T\",\n      \"alt_allele\":\"C\",\n      \"data_source\":\"NKI\"\n   },\n   {\n      \"model_id\":\"T127\",\n      \"sample_id\":\"T127-primary\",\n      \"source\":\"patient\",\n      \"molecular_characterization_id\":463856467972,\n      \"hgnc_symbol\":\"RAVER1\",\n      \"amino_acid_change\":null,\n      \"consequence\":\"downstream_gene_variant\",\n      \"read_depth\":\"208\",\n      \"allele_frequency\":\"0.014423076923076926\",\n      \"seq_start_position\":\"10315921\",\n      \"ref_allele\":\"T\",\n      \"alt_allele\":\"C\",\n      \"data_source\":\"NKI\"\n   }\n]"
+						}
+					]
+				},
+				{
+					"name": "Expression molecular data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor"
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items"
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/expression_data_extended?model_id=eq.CRC0082LM&data_source=eq.IRCC-CRC&source=eq.xenograft&sample_id=eq.CRC0082LMX0A02202TUMR01R01&hgnc_symbol=eq.ZFYVE21&rnaseq_coverage=is.null&rnaseq_fpkm=is.null&rnaseq_tpm=is.null&rnaseq_count=is.null&affy_hgea_probe_id=is.null&affy_hgea_expression_value=is.null&illumina_hgea_probe_id=is.null&illumina_hgea_expression_value=is.null&z_score=eq.0.9527476124118092&select=*&order=sample_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expression_data_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.CRC0082LM",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.IRCC-CRC",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "source",
+									"value": "eq.xenograft",
+									"description": "(patient, xenograft, cell)"
+								},
+								{
+									"key": "sample_id",
+									"value": "eq.CRC0082LMX0A02202TUMR01R01",
+									"description": "Sample identifier given by the provider"
+								},
+								{
+									"key": "hgnc_symbol",
+									"value": "eq.ZFYVE21",
+									"description": "Gene symbol"
+								},
+								{
+									"key": "rnaseq_coverage",
+									"value": "is.null",
+									"description": "The ratio between the number of bases of the mapped reads by the number of bases of a reference"
+								},
+								{
+									"key": "rnaseq_fpkm",
+									"value": "is.null",
+									"description": "Gene expression value represented in Fragments per kilo base of transcript per million mapped fragments (FPKM)"
+								},
+								{
+									"key": "rnaseq_tpm",
+									"value": "is.null",
+									"description": "Gene expression value represented in transcript per million (TPM)"
+								},
+								{
+									"key": "rnaseq_count",
+									"value": "is.null",
+									"description": "Read counts of the gene"
+								},
+								{
+									"key": "affy_hgea_probe_id",
+									"value": "is.null",
+									"description": "Affymetrix probe identifier"
+								},
+								{
+									"key": "affy_hgea_expression_value",
+									"value": "is.null",
+									"description": "Expresion value captured using Affymetrix arrays"
+								},
+								{
+									"key": "illumina_hgea_probe_id",
+									"value": "is.null",
+									"description": "Illumina probe identifier"
+								},
+								{
+									"key": "illumina_hgea_expression_value",
+									"value": "is.null",
+									"description": "Expresion value captured using Illumina arrays"
+								},
+								{
+									"key": "z_score",
+									"value": "eq.0.9527476124118092",
+									"description": "Z-score representing the gene expression level"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "sample_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Expression data with the model and sample it comes from."
+					},
+					"response": [
+						{
+							"name": "Get expression molecular data for a specific sample",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/expression_data_extended?sample_id=eq.CRC0082LMX0A02202TUMR01R01&select=*&order=sample_id.asc&offset=0&limit=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"expression_data_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "sample_id",
+											"value": "eq.CRC0082LMX0A02202TUMR01R01"
+										},
+										{
+											"key": "hgnc_symbol",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "rnaseq_coverage",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "rnaseq_fpkm",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "rnaseq_tpm",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "rnaseq_count",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "affy_hgea_probe_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "affy_hgea_expression_value",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "illumina_hgea_probe_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "illumina_hgea_expression_value",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "z_score",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "*"
+										},
+										{
+											"key": "order",
+											"value": "sample_id.asc"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-1.16194636304449\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"0.722828363710432\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.445063011804697\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.41623663958838203\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"0.168052690806564\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.87466415520023\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.824679014875987\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.87478253677475\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.236520734037333\"\n   },\n   {\n      \"model_id\":\"CRC0082LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0082LMX0A02202TUMR01R01\",\n      \"hgnc_symbol\":null,\n      \"rnaseq_coverage\":null,\n      \"rnaseq_fpkm\":null,\n      \"rnaseq_tpm\":null,\n      \"rnaseq_count\":null,\n      \"affy_hgea_probe_id\":null,\n      \"affy_hgea_expression_value\":null,\n      \"illumina_hgea_probe_id\":null,\n      \"illumina_hgea_expression_value\":null,\n      \"z_score\":\"-0.7603947578382559\"\n   }\n]"
+						}
+					]
+				},
+				{
+					"name": "CNA molecular data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cna_data_extended?model_id=eq.CRC0316LM&data_source=eq.IRCC-CRC&source=eq.xenograft&sample_id=eq.CRC0316LMX0A01201TUMD02000&hgnc_symbol=eq.MIR941-3&log10r_cna=eq.0.490518485&log2r_cna=eq.1.629467135&copy_number_status=eq.Amplification&gistic_value=is.null&picnic_value=is.null&select=*&order=sample_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cna_data_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.CRC0316LM",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.IRCC-CRC",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "source",
+									"value": "eq.xenograft",
+									"description": "(patient, xenograft, cell)"
+								},
+								{
+									"key": "sample_id",
+									"value": "eq.CRC0316LMX0A01201TUMD02000",
+									"description": "Sample identifier given by the provider"
+								},
+								{
+									"key": "hgnc_symbol",
+									"value": "eq.MIR941-3",
+									"description": "Gene symbol"
+								},
+								{
+									"key": "log10r_cna",
+									"value": "eq.0.490518485",
+									"description": "Log10 scaled copy number variation ratio"
+								},
+								{
+									"key": "log2r_cna",
+									"value": "eq.1.629467135",
+									"description": "Log2 scaled copy number variation ratio"
+								},
+								{
+									"key": "copy_number_status",
+									"value": "eq.Amplification",
+									"description": "Details whether there was a gain or loss of function. Categorized into gain, loss"
+								},
+								{
+									"key": "gistic_value",
+									"value": "is.null",
+									"description": "Score predicted using GISTIC tool for the copy number variation"
+								},
+								{
+									"key": "picnic_value",
+									"value": "is.null",
+									"description": "Score predicted using PICNIC algorithm for the copy number variation"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "sample_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  CNA data with the model and sample it comes from."
+					},
+					"response": [
+						{
+							"name": "Get CNA molecular data for a particular sample",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor",
+										"disabled": true
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items",
+										"disabled": true
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/cna_data_extended?sample_id=eq.CRC0316LMX0A01201TUMD02000&select=*&order=sample_id.asc&offset=0&limit=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cna_data_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "sample_id",
+											"value": "eq.CRC0316LMX0A01201TUMD02000"
+										},
+										{
+											"key": "hgnc_symbol",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "log10r_cna",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "log2r_cna",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "copy_number_status",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "gistic_value",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "picnic_value",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "*"
+										},
+										{
+											"key": "order",
+											"value": "sample_id.asc"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR320C2\",\n      \"log10r_cna\":null,\n      \"log2r_cna\":null,\n      \"copy_number_status\":\"Deletion\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR1289-2\",\n      \"log10r_cna\":null,\n      \"log2r_cna\":null,\n      \"copy_number_status\":\"Deletion\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR941-3\",\n      \"log10r_cna\":\"0.490518485\",\n      \"log2r_cna\":\"1.629467135\",\n      \"copy_number_status\":\"Amplification\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR941-4\",\n      \"log10r_cna\":\"0.53974134\",\n      \"log2r_cna\":\"1.792981921\",\n      \"copy_number_status\":\"Amplification\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"SGO1\",\n      \"log10r_cna\":null,\n      \"log2r_cna\":null,\n      \"copy_number_status\":\"Deletion\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"FAM83C\",\n      \"log10r_cna\":\"0.478461877\",\n      \"log2r_cna\":\"1.589415952\",\n      \"copy_number_status\":\"Amplification\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"RAB5A\",\n      \"log10r_cna\":null,\n      \"log2r_cna\":null,\n      \"copy_number_status\":\"Deletion\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR340\",\n      \"log10r_cna\":null,\n      \"log2r_cna\":null,\n      \"copy_number_status\":\"Deletion\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"GDF5-AS1\",\n      \"log10r_cna\":\"0.505877219\",\n      \"log2r_cna\":\"1.680487748\",\n      \"copy_number_status\":\"Amplification\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   },\n   {\n      \"model_id\":\"CRC0316LM\",\n      \"data_source\":\"IRCC-CRC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"CRC0316LMX0A01201TUMD02000\",\n      \"hgnc_symbol\":\"MIR941-4\",\n      \"log10r_cna\":\"0.54208949\",\n      \"log2r_cna\":\"1.800782306\",\n      \"copy_number_status\":\"Amplification\",\n      \"gistic_value\":null,\n      \"picnic_value\":null\n   }\n]"
+						}
+					]
+				},
+				{
+					"name": "Cytogenetics molecular data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range",
+								"value": "Lorem est sint tempor",
+								"disabled": true
+							},
+							{
+								"description": "Limiting and Pagination",
+								"key": "Range-Unit",
+								"value": "items",
+								"disabled": true
+							},
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "count=none",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cytogenetics_data_extended?model_id=eq.AB725&data_source=eq.UOC-BC&source=eq.xenograft&sample_id=eq.AB725-X1&hgnc_symbol=eq.ESR1&result=eq.negative&select=*&order=sample_id.asc&offset=0&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cytogenetics_data_extended"
+							],
+							"query": [
+								{
+									"key": "model_id",
+									"value": "eq.AB725",
+									"description": "Full name of the model used by provider"
+								},
+								{
+									"key": "data_source",
+									"value": "eq.UOC-BC",
+									"description": "Data source of the model (provider abbreviation)"
+								},
+								{
+									"key": "source",
+									"value": "eq.xenograft",
+									"description": "(patient, xenograft, cell)"
+								},
+								{
+									"key": "sample_id",
+									"value": "eq.AB725-X1",
+									"description": "Sample identifier given by the provider"
+								},
+								{
+									"key": "hgnc_symbol",
+									"value": "eq.ESR1",
+									"description": "Gene symbol"
+								},
+								{
+									"key": "result",
+									"value": "eq.negative",
+									"description": "Presence or absence of the cytogenetic marker"
+								},
+								{
+									"key": "select",
+									"value": "*",
+									"description": "Filtering Columns"
+								},
+								{
+									"key": "order",
+									"value": "sample_id.asc",
+									"description": "Ordering"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Limiting and Pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limiting and Pagination"
+								}
+							]
+						},
+						"description": "  Cytogenetics data with the model and sample it comes from."
+					},
+					"response": [
+						{
+							"name": "Get Cytogenetics molecular data for a particular sample",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range",
+										"value": "Lorem est sint tempor"
+									},
+									{
+										"description": "Limiting and Pagination",
+										"key": "Range-Unit",
+										"value": "items"
+									},
+									{
+										"description": "Preference",
+										"key": "Prefer",
+										"value": "count=none"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/cytogenetics_data_extended?sample_id=eq.AB725-X1&order=sample_id.asc&offset=0&limit=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cytogenetics_data_extended"
+									],
+									"query": [
+										{
+											"key": "model_id",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "data_source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "source",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "sample_id",
+											"value": "eq.AB725-X1"
+										},
+										{
+											"key": "hgnc_symbol",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "result",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "select",
+											"value": "Lorem est sint tempor",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "sample_id.asc"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n   {\n      \"model_id\":\"AB725\",\n      \"data_source\":\"UOC-BC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"AB725-X1\",\n      \"hgnc_symbol\":\"PGR\",\n      \"result\":\"negative\"\n   },\n   {\n      \"model_id\":\"AB725\",\n      \"data_source\":\"UOC-BC\",\n      \"source\":\"xenograft\",\n      \"sample_id\":\"AB725-X1\",\n      \"hgnc_symbol\":\"ESR1\",\n      \"result\":\"negative\"\n   }\n]"
+						}
+					]
+				}
+			],
+			"description": "Molecular data associated to the samples in the models."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://cancermodels.org/api",
+			"type": "string"
+		}
+	]
+}
