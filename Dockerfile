@@ -12,6 +12,6 @@ FROM nginx:latest
 RUN rm -rf /usr/share/nginx/html/*
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=download-image /usr/local/bin/postgrest /usr/local/bin/
-ENTRYPOINT postgrest & nginx -g 'daemon off;' 
+ENTRYPOINT postgrest >> /var/log/pdcm-api/postgrest.log & nginx -g 'daemon off;' 
 
 EXPOSE 80
