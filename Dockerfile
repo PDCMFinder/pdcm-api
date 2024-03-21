@@ -13,11 +13,6 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=download-image /usr/local/bin/postgrest /usr/local/bin/
 
-# Create log directory and file
-RUN mkdir -p /var/log/pdcm-api \
-    && touch /var/log/pdcm-api/postgrest.log \
-    && chmod 666 /var/log/pdcm-api/postgrest.log
-
 COPY start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start.sh
 
