@@ -119,7 +119,7 @@ deploy-HH-WP-WEBADMIN-prod:
   image: dtzar/helm-kubectl:2.13.0
   before_script:
     - mkdir -p $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod
-    - cp k8-deploy/prod/* $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/
+    - cp -r k8-deploy/prod/* $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_OPENAPI_SERVER_PROXY_URI>|${PROD_PGRST_OPENAPI_SERVER_PROXY_URI}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${PROD_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-prod/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${PROD_PGRST_DB_SCHEMA}|g" {} \;
@@ -159,7 +159,7 @@ deploy-HX-WP-WEBADMIN-sec:
   image: dtzar/helm-kubectl:2.13.0
   before_script:
     - mkdir -p $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec
-    - cp k8-deploy/prod/* $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/
+    - cp -r k8-deploy/prod/* $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_OPENAPI_SERVER_PROXY_URI>|${SEC_PGRST_OPENAPI_SERVER_PROXY_URI}|g" {} \;
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${SEC_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HX-WP-WEBADMIN-sec/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${SEC_PGRST_DB_SCHEMA}|g" {} \;
