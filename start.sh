@@ -1,3 +1,3 @@
 #!/bin/sh
 postgrest &
-nginx -g
+nginx -g 'daemon off;' 
