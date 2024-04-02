@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: app-logrotate
+  namespace: pdcm-api
+spec:
+  schedule: "0 0 1 * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: logrotate
+            image: docker.io/kicm/logrotate
+            volumeMounts:
+            - name: logrotate-conf
+              mountPath: /etc/logrotate.d
+            - name: app-logs
+              mountPath: /var/log/pdcm-api
+          volumes:
+          - name: logrotate-conf
+            configMap:
+              name: logrotate-config
+          - name: app-logs
+            persistentVolumeClaim:
+              claimName: pdcm-api-logs-pvc
+          restartPolicy: OnFailure
