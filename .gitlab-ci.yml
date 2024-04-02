@@ -266,7 +266,7 @@ deploy-HH-WP-WEBADMIN-dev:
   image: dtzar/helm-kubectl:2.13.0
   before_script:
     - mkdir -p $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev
-    - cp k8-deploy/dev/* $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/
+    - cp -r k8-deploy/dev/* $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_OPENAPI_SERVER_PROXY_URI>|${DEV_PGRST_OPENAPI_SERVER_PROXY_URI}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_DB_ANON_ROLE>|${DEV_PGRST_DB_ANON_ROLE}|g" {} \;
     - find $DEPLOYMENTS_DIR/HH-WP-WEBADMIN-dev/ -type f -exec sed -i "s|<PGRST_DB_SCHEMA>|${DEV_PGRST_DB_SCHEMA}|g" {} \;

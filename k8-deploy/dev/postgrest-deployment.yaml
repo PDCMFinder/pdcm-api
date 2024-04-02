@@ -37,6 +37,9 @@ spec:
               protocol: TCP
           resources: {}
           imagePullPolicy: "Always"
+          volumeMounts:
+            - name: pv-data
+              mountPath: /var/log/pdcm-api
         - image: "pdxfinder/pdcm-api:mail-dev"
           name: create-ticket
           env:
@@ -56,5 +59,9 @@ spec:
               value: "<HTTPS_PROXY>"
           resources: {}
           imagePullPolicy: "Always"
+      volumes:
+        - name: pv-data
+          persistentVolumeClaim:
+            claimName: pdcm-api-logs-dev-pvc   
       restartPolicy: Always
 status: {}

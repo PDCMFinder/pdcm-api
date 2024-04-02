@@ -12,6 +12,10 @@ FROM nginx:latest
 RUN rm -rf /usr/share/nginx/html/*
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=download-image /usr/local/bin/postgrest /usr/local/bin/
-ENTRYPOINT postgrest & nginx -g 'daemon off;' 
+
+COPY start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start.sh
+
+CMD ["/usr/local/bin/start.sh"]
 
 EXPOSE 80

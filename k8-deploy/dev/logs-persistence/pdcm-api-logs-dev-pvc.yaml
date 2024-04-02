@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pdcm-api-logs-dev-pvc
+  labels:
+    app: pdcm-api-logs-dev-pvc
+  namespace: pdcm-api-dev
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: standard-nfs-production
