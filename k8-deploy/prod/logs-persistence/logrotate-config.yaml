@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logrotate-config
+  namespace: pdcm-api
+data:
+  my_logs.conf: |
+    /var/log/pdcm-api/*.log {
+        montly
+        missingok
+        rotate 24
+        dateformat -%Y%m%d_%H%M%S
+        notifempty
+        copytruncate
+        nocompress
+        su root root
+    }
